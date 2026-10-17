@@ -66,6 +66,7 @@
 #tum-dialog .tum-fill { height: 100%; background: var(--tum-accent); border-radius: inherit; }
 #tum-dialog .tum-track[data-level="medium"] .tum-fill { background: #e9cb89; }
 #tum-dialog .tum-track[data-level="low"] .tum-fill { background: #eea694; }
+#tum-dialog .tum-estimate { font-size: 10px; color: var(--tum-muted); margin-top: 7px; line-height: 1.6; }
 #tum-dialog .tum-reset { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 8px; font-size: 10px; color: var(--tum-muted); margin-top: 9px; line-height: 1.6; }
 #tum-dialog .tum-card-footer { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 12px 16px; border-top: 1px solid var(--tum-line); }
 #tum-dialog .tum-freshness { font-size: 10px; color: var(--tum-muted); }

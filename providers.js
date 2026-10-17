@@ -53,8 +53,11 @@ export function normalizeCommandCode(payload, subscriptionPayload = null) {
     const sub = subscriptionPayload?.success === false ? null : subscriptionPayload?.data;
     const monthly = number(credits.monthlyCredits);
     if (monthly === null && !windows.some(w => w.remaining !== null)) throw new UsageError('额度响应没有可用的余额或周期用量。', 'schema');
-    // The monthly cap is not in this API. Never infer it from a hardcoded plan price.
-    windows.push({ id: 'monthly', label: '本账期', unit: 'credits', remaining: monthly, percent: null, cap: null, resetAt: resetTime(sub?.currentPeriodEnd), periodEnd: true });
+    // Estimate monthly allowance from twice the weekly cap, not twice its remaining balance.
+    const weeklyCap = number(limits?.weekly?.cap);
+    const monthlyCap = weeklyCap > 0 && limits?.limited !== false && Number.isFinite(weeklyCap * 2) ? weeklyCap * 2 : null;
+    const monthlyPercent = monthly !== null && monthlyCap !== null ? Math.max(0, Math.min(100, monthly / monthlyCap * 100)) : null;
+    windows.push({ id: 'monthly', label: '本账期', unit: 'credits', remaining: monthly, percent: monthlyPercent, cap: monthlyCap, estimatedCap: monthlyCap !== null, resetAt: resetTime(sub?.currentPeriodEnd), periodEnd: true });
     return {
         kind: 'quota', windows,
         purchased: number(credits.purchasedCredits), free: number(credits.freeCredits),

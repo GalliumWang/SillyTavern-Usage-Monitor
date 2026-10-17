@@ -24,7 +24,9 @@ test('Command Code: limited=true is a configured limit, not an exhausted account
     assert.equal(result.windows[1].remaining, 29.25);
     assert.equal(result.windows[1].resetAt, 1792342432274);
     assert.equal(result.windows[2].remaining, 64.25);
-    assert.equal(result.windows[2].cap, null);
+    assert.equal(result.windows[2].cap, 70);
+    assert.ok(Math.abs(result.windows[2].percent - 64.25 / 70 * 100) < 1e-10);
+    assert.equal(result.windows[2].estimatedCap, true);
     assert.equal(result.cancelAtPeriodEnd, true);
 });
 
@@ -39,7 +41,33 @@ test('Missing window fields are unknown rather than zero or full allowance', () 
     const result = normalizeCommandCode({ credits: { monthlyCredits: 10 }, windowLimits: { fiveHour: { used: null, cap: 14 } } });
     assert.equal(result.windows[0].remaining, null);
     assert.equal(result.windows[1].percent, null);
+    assert.equal(result.windows[2].cap, null);
+    assert.equal(result.windows[2].percent, null);
     assert.throws(() => normalizeCommandCode({ credits: {} }), UsageError);
+});
+
+test('Monthly allowance uses twice the weekly cap and clamps only the displayed percentage', () => {
+    const payload = structuredClone(cc);
+    payload.windowLimits.weekly.cap = 50;
+    payload.windowLimits.weekly.used = 49;
+    payload.credits.monthlyCredits = 80;
+    assert.equal(normalizeCommandCode(payload).windows[2].cap, 100);
+    assert.equal(normalizeCommandCode(payload).windows[2].percent, 80);
+    payload.credits.monthlyCredits = 120;
+    assert.equal(normalizeCommandCode(payload).windows[2].remaining, 120);
+    assert.equal(normalizeCommandCode(payload).windows[2].percent, 100);
+    payload.credits.monthlyCredits = -1;
+    assert.equal(normalizeCommandCode(payload).windows[2].percent, 0);
+    payload.credits.monthlyCredits = null;
+    assert.equal(normalizeCommandCode(payload).windows[2].percent, null);
+    for (const cap of [0, -1, null, '35', Number.MAX_VALUE]) {
+        payload.windowLimits.weekly.cap = cap;
+        assert.equal(normalizeCommandCode(payload).windows[2].cap, null);
+    }
+    payload.credits.monthlyCredits = 50;
+    payload.windowLimits.weekly.cap = 35;
+    payload.windowLimits.limited = false;
+    assert.equal(normalizeCommandCode(payload).windows[2].cap, null);
 });
 
 test('OpenCode: percent means used, rate-limited status overrides rounded percentage', () => {

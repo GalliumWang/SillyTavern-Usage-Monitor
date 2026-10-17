@@ -101,6 +101,9 @@ function renderWindow(window) {
         track.append(fill);
         row.append(track);
     }
+    if (window.estimatedCap) {
+        row.append(element('p', 'tum-estimate', `${window.percent !== null ? `剩余 ${amount(window.percent, 1)}% · ` : ''}上限按每周上限 × 2 计算`));
+    }
     const reset = element('div', 'tum-reset');
     if (window.resetAt) {
         const relative = element('span', '', countdown(window.resetAt));
