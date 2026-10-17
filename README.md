@@ -45,9 +45,9 @@ OpenRouter 和 Command Code 默认直连，三家都可以手动选择内置代�
 
 ## 密钥与本地配置
 
-密钥仅保留在当前页面内存及密码输入框中，不写入 `extensionSettings`、localStorage、sessionStorage、聊天内容或日志。关闭面板不会清除密钥；刷新页面后需重新输入。可使用“清除全部密钥”主动清空。
+密钥保存在酒馆设置中（服务器端 `extensionSettings.usageMonitor.keys`，随酒馆 settings.json 持久化），刷新页面后仍然有效，输入框会自动回填。关闭面板不会清除密钥；可使用“清除全部密钥”主动清空并从设置中删除。
 
-前端内存不是密钥保险库，同页面运行的其他脚本仍可能访问它。自行保管本地 JSON，不要上传到仓库。
+注意：密钥以明文存放在酒馆服务器的设置文件里，能接触到服务器文件的人可以看到；仅在自己完全控制的酒馆上填写。自行保管本地 JSON，不要上传到仓库。
 
 导入格式与 `credentials.example.json` 一致，可只填其中一家：
 
@@ -59,7 +59,7 @@ OpenRouter 和 Command Code 默认直连，三家都可以手动选择内置代�
 }
 ```
 
-导入仅填充内存，不自动发起请求；点击“全部刷新”即可查询。OpenRouter 普通 Key 在本次真实账户测试中可查询余额；若返回 403，应核对该账户的密钥权限。这里显示的是账户余额，不是 Key 的预算。Command Code 使用 Studio 的 API Key，OpenCode Go 使用对应订阅工作区的 API Key。
+导入即保存到酒馆设置，不自动发起请求；点击“全部刷新”即可查询。OpenRouter 普通 Key 在本次真实账户测试中可查询余额；若返回 403，应核对该账户的密钥权限。这里显示的是账户余额，不是 Key 的预算。Command Code 使用 Studio 的 API Key，OpenCode Go 使用对应订阅工作区的 API Key。
 
 ## 数据含义与刷新
 

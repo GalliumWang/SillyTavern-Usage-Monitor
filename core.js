@@ -7,7 +7,18 @@ export const DEFAULT_SETTINGS = Object.freeze({
         commandcode: { enabled: true, transport: 'direct' },
         opencodeGo: { enabled: true, transport: 'proxy' },
     },
+    keys: Object.freeze({ openrouter: '', commandcode: '', opencodeGo: '' }),
 });
+
+const MAX_KEY_LENGTH = 8192;
+const KEY_FORBIDDEN = /[\r\n\0]/;
+
+function sanitizeKey(value) {
+    if (typeof value !== 'string') return null;
+    const trimmed = value.trim();
+    if (!trimmed || trimmed.length > MAX_KEY_LENGTH || KEY_FORBIDDEN.test(trimmed)) return null;
+    return trimmed;
+}
 
 export function cleanSettings(input = {}) {
     if (!input || typeof input !== 'object' || Array.isArray(input)) input = {};
@@ -19,7 +30,11 @@ export function cleanSettings(input = {}) {
         if (typeof saved?.enabled === 'boolean') result.providers[id].enabled = saved.enabled;
         if (['direct', 'proxy'].includes(saved?.transport)) result.providers[id].transport = saved.transport;
     }
-    // Only whitelisted preferences are returned; API keys never enter extension settings.
+    // API keys persist under the whitelisted `keys` object; anything that looks
+    // like a key elsewhere (root `apiKey`, `providers[id].apiKey`) is dropped.
+    for (const id of Object.keys(result.keys)) {
+        result.keys[id] = sanitizeKey(input.keys?.[id]) ?? '';
+    }
     return result;
 }
 
@@ -27,11 +42,13 @@ export function importedKeys(input) {
     if (!input || typeof input !== 'object' || Array.isArray(input)) throw new Error('配置必须是 JSON 对象。');
     const result = {};
     for (const id of Object.keys(DEFAULT_SETTINGS.providers)) {
-        const key = input[id]?.apiKey;
-        if (typeof key === 'string' && key.trim()) {
-            if (key.length > 8192 || /[\r\n\0]/.test(key)) throw new Error('Key 格式无效。');
-            result[id] = key.trim();
+        const raw = input[id]?.apiKey;
+        const key = sanitizeKey(raw);
+        if (key === null) {
+            if (typeof raw === 'string' && raw.trim()) throw new Error('Key 格式无效。');
+            continue;
         }
+        result[id] = key;
     }
     if (!Object.keys(result).length) throw new Error('没有找到有效的 apiKey；请检查配置格式。');
     return result;

@@ -134,13 +134,25 @@ test('An aborted partial Command Code query cannot deliver a stale snapshot', as
     }), error => error.name === 'AbortError');
 });
 
-test('Only display preferences are persisted, never imported API keys', () => {
-    const safe = cleanSettings({ apiKey: 'secret', providers: { openrouter: { enabled: false, transport: 'evil', apiKey: 'secret' } } });
+test('API keys persist in settings only under the whitelisted keys object', () => {
+    const safe = cleanSettings({
+        apiKey: 'secret',
+        keys: { openrouter: ' k1 ', commandcode: 'bad\nkey', opencodeGo: 123 },
+        providers: { openrouter: { enabled: false, transport: 'evil', apiKey: 'secret' } },
+    });
+    assert.equal(safe.keys.openrouter, 'k1');
+    assert.equal(safe.keys.commandcode, '');
+    assert.equal(safe.keys.opencodeGo, '');
     assert.equal(JSON.stringify(safe).includes('secret'), false);
     assert.equal(safe.providers.openrouter.transport, 'direct');
     assert.equal(safe.providers.openrouter.enabled, false);
     assert.equal(cleanSettings({ refreshSeconds: 1 }).refreshSeconds, 60);
     assert.equal(cleanSettings(null).refreshSeconds, 60);
+});
+
+test('Saved keys survive a settings round-trip and unknown key fields are dropped', () => {
+    const once = cleanSettings({ keys: { openrouter: 'k1', unknown: 'x' } });
+    assert.deepEqual(cleanSettings(once).keys, { openrouter: 'k1', commandcode: '', opencodeGo: '' });
 });
 
 test('Import accepts the agreed local config and validates malformed input', () => {

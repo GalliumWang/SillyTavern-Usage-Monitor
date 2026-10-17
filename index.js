@@ -43,9 +43,12 @@ function invalidate(id) {
 }
 
 function setKey(id, value) {
-    if (state[id].key === value.trim()) return;
+    const next = value.trim();
+    if (state[id].key === next) return;
     invalidate(id);
-    state[id].key = value.trim();
+    state[id].key = next;
+    settings.keys[id] = next;
+    persist();
     renderCard(id);
 }
 
@@ -205,7 +208,7 @@ function configureSection() {
     const details = element('details', 'tum-config');
     details.append(element('summary', '', '账户与连接配置'));
     const intro = element('div', 'tum-config-intro');
-    intro.append(element('p', '', '密钥仅保留在当前页面内存中；刷新页面后需重新填写或导入。显示偏好会保存在酒馆设置中。'));
+    intro.append(element('p', '', '密钥随显示偏好一起保存在酒馆设置中（服务器端），刷新页面后仍然有效。密钥以明文存放在酒馆服务器的设置文件里，仅在自己使用的酒馆上填写。'));
     const importButton = button('导入本地配置', 'tum-button', () => file.click());
     const file = element('input');
     file.type = 'file';
@@ -222,7 +225,7 @@ function configureSection() {
                 setKey(id, key);
                 dialog.querySelector(`[data-key="${id}"]`).value = key;
             }
-            banner(`已导入 ${Object.keys(keys).length} 个服务的密钥，点击“全部刷新”查询。`);
+            banner(`已导入 ${Object.keys(keys).length} 个服务的密钥，已保存到酒馆设置，点击“全部刷新”查询。`);
         } catch { banner('导入失败：请检查 JSON 格式，文件中需包含 openrouter / commandcode / opencodeGo 下的 apiKey。'); }
         finally { file.value = ''; }
     });
@@ -231,7 +234,7 @@ function configureSection() {
             setKey(id, '');
             dialog.querySelector(`[data-key="${id}"]`).value = '';
         }
-        banner('已清除当前页面中的密钥与查询结果。');
+        banner('已清除密钥与查询结果，酒馆设置中的密钥也已删除。');
     });
     const actions = element('div', 'tum-config-actions');
     actions.append(importButton, clear, file);
@@ -258,6 +261,7 @@ function configureSection() {
         key.autocomplete = 'off';
         key.spellcheck = false;
         key.placeholder = '粘贴查询 Key';
+        key.value = state[id].key || '';
         key.dataset.key = id;
         key.setAttribute('aria-label', `${provider.name} API Key`);
         key.addEventListener('input', () => setKey(id, key.value));
@@ -350,6 +354,7 @@ function init() {
         return;
     }
     settings = cleanSettings(hostContext.extensionSettings[SETTINGS_KEY]);
+    for (const id of ids) state[id].key = settings.keys[id] || '';
     const target = document.querySelector('#extensions_settings2') || document.querySelector('#extensions_settings');
     if (target) {
         const launcher = element('div', 'tum-launcher');
