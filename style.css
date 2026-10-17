@@ -1,0 +1,109 @@
+.tum-launcher { padding: 14px; margin: 10px 0; border: 1px solid var(--SmartThemeBorderColor, #555); border-radius: 10px; }
+.tum-launcher p { font-size: .85em; opacity: .7; margin: 6px 0 12px; }
+.tum-launch-button { width: 100%; justify-content: center; }
+#tum-dialog {
+    --tum-bg: #111b22; --tum-panel: #19262f; --tum-inset: #13212a; --tum-line: #31424b;
+    --tum-text: #e9eff1; --tum-muted: #9badb6; --tum-accent: #9de2c1;
+    background: var(--tum-bg); color: var(--tum-text); color-scheme: dark;
+    border: 1px solid #40545c; border-radius: 20px; padding: 0;
+    width: min(1080px, calc(100vw - 36px)); max-width: none; max-height: calc(100dvh - 40px);
+    overflow: auto; box-sizing: border-box; margin: auto;
+    font-family: var(--mainFontFamily, system-ui, sans-serif); font-size: 14px;
+    box-shadow: 0 28px 90px #0009; text-align: left;
+}
+#tum-dialog::backdrop { background: #070e15aa; backdrop-filter: blur(5px); }
+#tum-dialog *, #tum-dialog *::before, #tum-dialog *::after { box-sizing: border-box; }
+#tum-dialog [hidden] { display: none !important; }
+#tum-dialog h2, #tum-dialog h3, #tum-dialog p { margin: 0; padding: 0; color: inherit; }
+#tum-dialog button, #tum-dialog input, #tum-dialog select { font: inherit; }
+#tum-dialog button { cursor: pointer; }
+#tum-dialog button:disabled { cursor: default; opacity: .4; }
+#tum-dialog button:focus-visible, #tum-dialog input:focus-visible, #tum-dialog select:focus-visible, #tum-dialog summary:focus-visible { outline: 2px solid var(--tum-accent); outline-offset: 3px; }
+#tum-dialog .tum-shell { padding: 30px; }
+#tum-dialog .tum-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+#tum-dialog .tum-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: .2em; color: var(--tum-accent); margin-bottom: 10px; }
+#tum-dialog h2 { font-size: 28px; font-weight: 650; line-height: 1.25; letter-spacing: -.04em; }
+#tum-dialog .tum-subtitle { color: var(--tum-muted); margin-top: 10px; }
+#tum-dialog .tum-close { background: #24343e; border: 1px solid var(--tum-line); border-radius: 50%; width: 34px; height: 34px; color: var(--tum-text); font-size: 24px; line-height: 1; flex: 0 0 auto; }
+#tum-dialog .tum-toolbar { display: flex; align-items: center; gap: 12px; margin: 26px 0 22px; }
+#tum-dialog .tum-auto-label { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
+#tum-dialog input[type="checkbox"] { accent-color: var(--tum-accent); width: 15px; height: 15px; margin: 0; cursor: pointer; }
+#tum-dialog .tum-input { background: var(--tum-inset); border: 1px solid var(--tum-line); border-radius: 8px; color: var(--tum-text); height: 38px; padding: 8px 10px; width: 100%; min-width: 0; box-shadow: none; }
+#tum-dialog .tum-interval { width: auto; max-width: 140px; height: 34px; font-size: 12px; }
+#tum-dialog .tum-button { border-radius: 8px; border: 1px solid var(--tum-line); background: #24343e; color: var(--tum-text); padding: 8px 13px; line-height: 1.3; white-space: nowrap; transition: background .15s; }
+#tum-dialog .tum-button:hover:not(:disabled) { background: #324751; }
+#tum-dialog .tum-button-primary { margin-left: auto; background: var(--tum-accent); color: #142d26; border-color: var(--tum-accent); font-weight: 650; }
+#tum-dialog .tum-button-primary:hover:not(:disabled) { background: #b8f0d6; }
+#tum-dialog .tum-button-small { font-size: 12px; padding: 6px 11px; }
+#tum-dialog .tum-button-quiet { background: transparent; color: var(--tum-muted); }
+#tum-dialog .tum-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+#tum-dialog .tum-card { min-width: 0; background: var(--tum-panel); border: 1px solid var(--tum-line); border-radius: 14px; display: flex; flex-direction: column; overflow: hidden; }
+#tum-dialog .tum-card[data-disabled="true"] { opacity: .55; }
+#tum-dialog .tum-card-header { display: flex; align-items: center; gap: 10px; padding: 18px 16px; border-bottom: 1px solid var(--tum-line); }
+#tum-dialog .tum-brand { border-radius: 10px; width: 36px; height: 36px; display: grid; place-items: center; flex-shrink: 0; background: #253e3b; color: #b1e3c5; font-size: 12px; font-weight: 800; letter-spacing: -.03em; }
+#tum-dialog .tum-brand[data-brand="commandcode"] { background: #3b3430; color: #f1c6a3; }
+#tum-dialog .tum-brand[data-brand="opencodeGo"] { background: #2c3546; color: #bed3ff; }
+#tum-dialog .tum-provider-name { min-width: 0; }
+#tum-dialog h3 { font-size: 14px; font-weight: 650; line-height: 1.4; white-space: nowrap; }
+#tum-dialog .tum-muted { font-size: 11px; color: var(--tum-muted); }
+#tum-dialog .tum-status { margin-left: auto; font-size: 10px; white-space: nowrap; color: var(--tum-muted); }
+#tum-dialog .tum-status[data-state="ok"] { color: var(--tum-accent); }
+#tum-dialog .tum-status[data-state="error"] { color: #f5b88d; }
+#tum-dialog .tum-card-body { flex: 1; padding: 18px 16px; }
+#tum-dialog .tum-remaining-label { font-size: 10px; letter-spacing: .1em; color: var(--tum-muted); margin-bottom: 14px; }
+#tum-dialog .tum-empty { min-height: 240px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; gap: 15px; color: var(--tum-muted); }
+#tum-dialog .tum-empty-number { font-size: 40px; font-weight: 300; }
+#tum-dialog .tum-empty p { font-size: 12px; line-height: 1.8; max-width: 210px; }
+#tum-dialog .tum-balance { min-height: 268px; display: flex; flex-direction: column; padding-top: 22px; }
+#tum-dialog .tum-balance > .tum-muted { font-size: 12px; }
+#tum-dialog .tum-balance > strong { font-size: clamp(28px, 3.2vw, 42px); font-weight: 550; letter-spacing: -.045em; color: var(--tum-accent); margin: 12px 0 24px; overflow-wrap: anywhere; }
+#tum-dialog .tum-balance-detail { display: flex; flex-direction: column; gap: 9px; margin-top: auto; font-size: 11px; color: var(--tum-muted); }
+#tum-dialog .tum-window + .tum-window { margin-top: 22px; }
+#tum-dialog .tum-window-title { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; font-size: 12px; }
+#tum-dialog .tum-window-value { font-size: 13px; font-variant-numeric: tabular-nums; }
+#tum-dialog .tum-window-value small { font-size: 9px; font-weight: 400; color: var(--tum-muted); }
+#tum-dialog .tum-track { background: #2b3a42; height: 5px; border-radius: 8px; overflow: hidden; margin-top: 10px; }
+#tum-dialog .tum-fill { height: 100%; background: var(--tum-accent); border-radius: inherit; }
+#tum-dialog .tum-track[data-level="medium"] .tum-fill { background: #e9cb89; }
+#tum-dialog .tum-track[data-level="low"] .tum-fill { background: #eea694; }
+#tum-dialog .tum-reset { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 8px; font-size: 10px; color: var(--tum-muted); margin-top: 9px; line-height: 1.6; }
+#tum-dialog .tum-card-footer { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 12px 16px; border-top: 1px solid var(--tum-line); }
+#tum-dialog .tum-freshness { font-size: 10px; color: var(--tum-muted); }
+#tum-dialog .tum-card-feedback:empty { display: none; }
+#tum-dialog .tum-card-feedback { padding: 0 16px 14px; }
+#tum-dialog .tum-error, #tum-dialog .tum-note, #tum-dialog .tum-extra { font-size: 11px; line-height: 1.8; overflow-wrap: anywhere; }
+#tum-dialog .tum-error { color: #f0b79c; }
+#tum-dialog .tum-note, #tum-dialog .tum-extra { color: var(--tum-muted); margin-top: 12px; }
+#tum-dialog .tum-card[data-stale="true"] .tum-card-body { opacity: .65; }
+#tum-dialog .tum-footnote { font-size: 10px; color: var(--tum-muted); margin: 16px 0 24px; line-height: 1.8; }
+#tum-dialog .tum-config { border: 1px solid var(--tum-line); border-radius: 12px; overflow: hidden; }
+#tum-dialog .tum-config summary { padding: 16px 18px; font-size: 13px; font-weight: 600; cursor: pointer; }
+#tum-dialog .tum-config-intro { padding: 0 18px 18px; color: var(--tum-muted); font-size: 12px; line-height: 1.8; }
+#tum-dialog .tum-config-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+#tum-dialog .tum-config-row { padding: 16px 18px; display: grid; grid-template-columns: 155px minmax(0, 1fr) 155px; gap: 14px; align-items: end; border-top: 1px solid var(--tum-line); }
+#tum-dialog .tum-enable-label { align-self: center; display: flex; gap: 8px; align-items: center; font-size: 12px; }
+#tum-dialog .tum-field { display: flex; flex-direction: column; gap: 6px; }
+#tum-dialog .tum-field > span { font-size: 10px; color: var(--tum-muted); }
+#tum-dialog .tum-proxy-help { padding: 18px; border-top: 1px solid var(--tum-line); font-size: 11px; line-height: 1.9; color: var(--tum-muted); }
+#tum-dialog .tum-proxy-help strong { color: var(--tum-text); }
+#tum-dialog .tum-proxy-help p + p { margin-top: 8px; }
+#tum-dialog .tum-banner { border: 1px solid #47655c; border-radius: 9px; background: #213c33; color: #c1e9d6; margin-bottom: 18px; padding: 12px 14px; font-size: 12px; line-height: 1.7; }
+@media (max-width: 780px) {
+    #tum-dialog { width: calc(100vw - 20px); max-height: calc(100dvh - 20px); border-radius: 14px; }
+    #tum-dialog .tum-shell { padding: 20px 16px; }
+    #tum-dialog .tum-grid { grid-template-columns: 1fr; }
+    #tum-dialog h2 { font-size: 24px; }
+    #tum-dialog .tum-empty { min-height: 120px; }
+    #tum-dialog .tum-balance { min-height: 170px; }
+    #tum-dialog .tum-balance > strong { font-size: 38px; }
+    #tum-dialog .tum-config-row { grid-template-columns: minmax(0, 1fr) minmax(120px, .65fr); }
+    #tum-dialog .tum-enable-label { grid-column: 1 / -1; }
+}
+@media (max-width: 380px) {
+    #tum-dialog .tum-toolbar { gap: 7px; flex-wrap: wrap; }
+    #tum-dialog .tum-auto-label { font-size: 12px; }
+    #tum-dialog .tum-interval { max-width: 115px; }
+    #tum-dialog .tum-button-primary { font-size: 12px; }
+    #tum-dialog .tum-config-row { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) { #tum-dialog * { transition: none !important; } }

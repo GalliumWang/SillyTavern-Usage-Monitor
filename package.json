@@ -1,0 +1,9 @@
+{
+  "name": "sillytavern-usage-monitor",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "A frontend SillyTavern extension for OpenRouter, Command Code and OpenCode Go usage.",
+  "license": "MIT",
+  "scripts": { "test": "node --test tests/*.test.mjs" }
+}

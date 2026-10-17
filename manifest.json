@@ -1,0 +1,12 @@
+{
+  "display_name": "余额与订阅用量",
+  "loading_order": 100,
+  "requires": [],
+  "optional": [],
+  "js": "index.js",
+  "css": "style.css",
+  "author": "Usage Monitor contributors",
+  "homePage": "https://github.com/GalliumWang/SillyTavern-Usage-Monitor",
+  "version": "0.1.0",
+  "minimum_client_version": "1.13.0"
+}
